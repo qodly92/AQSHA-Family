@@ -102,6 +102,7 @@ async function init(){if(!OK)return msg('SB_URL / SB_KEY di index.html belum dii
  if(!P||P.role=='pending'){nav();$('#main').innerHTML=`<div class="card"><div class="mascot">⏳</div><h3>${P?'Menunggu persetujuan':'Akses belum tersedia'}</h3><p>Minta Kepala Keluarga (admin) menyetujui akun <b>${esc(U.email)}</b> di Setting > Pengguna.</p></div>`;return}
  PS=(await sb.from('profiles').select('*')).data||[];
  const c=(await sb.from('records').select('*').eq('module','_cfg').limit(1)).data;if(c&&c[0]){CFGID=c[0].id;CFG={...CFG,...c[0].data}}
+ if(!Array.isArray(CFG.menus)||!CFG.menus.length||CFG.menus.some(m=>!('p' in m)))CFG.menus=DEF;CFG.menus=CFG.menus.map(m=>({...m,p:m.p||''}));
  nav();go('dash')}
 async function saveCfg(){if(CFGID)await sb.from('records').update({data:CFG}).eq('id',CFGID);else{const r=await sb.from('records').insert({module:'_cfg',data:CFG}).select();if(r.data)CFGID=r.data[0].id;else return alert(r.error.message)}nav()}
 function tgl(k){OPEN.has(k)?OPEN.delete(k):OPEN.add(k);nav()}

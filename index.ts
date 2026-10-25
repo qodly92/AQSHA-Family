@@ -2,7 +2,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
 const env = (k: string) => Deno.env.get(k);
-const sb = createClient(env("SUPABASE_URL")!, env("SUPABASE_SERVICE_ROLE_KEY")!);
+const sb = createClient(env("https://afnhkecxlaitzqacrrpd.supabase.co")!, env("sb_publishable_9UEkrY2C2awPMlInFYpXWg_EeCeimXz")!);
 // tanggal WIB (UTC+7), n hari dari hari ini
 const day = (n: number) => new Date(Date.now() + 7 * 3600e3 + n * 864e5).toISOString().slice(0, 10);
 

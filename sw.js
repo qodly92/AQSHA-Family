@@ -1,4 +1,8 @@
+const C='ictportal-v5';
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',e=>e.waitUntil(clients.claim()));
-self.addEventListener('fetch',e=>{const r=e.request;if(r.method!='GET'||!r.url.startsWith(self.location.origin))return;
- e.respondWith(fetch(r).then(x=>{const c=x.clone();caches.open('aqsha-v2').then(k=>k.put(r,c));return x}).catch(()=>caches.match(r)))});
+self.addEventListener('fetch',e=>{
+  if(e.request.method!=='GET'||!e.request.url.startsWith(self.location.origin))return;
+  e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(C).then(x=>x.put(e.request,c));return r})
+    .catch(()=>caches.match(e.request).then(r=>r||caches.match('./index.html'))));
+});

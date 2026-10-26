@@ -46,12 +46,13 @@ dialog{border:0;border-radius:24px;padding:18px;max-width:420px;width:92%;backgr
 .sw{display:inline-block;width:46px;height:46px;border-radius:50%;border:3px solid var(--bd);cursor:pointer;margin:3px}.sw.on{border-color:var(--tx)}.av.m{border-color:#6aa5ff}.av.f{border-color:#f06292}
 .hero{background:linear-gradient(135deg,var(--pr),var(--pr2));color:#fff;border-radius:24px;padding:16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.hero .e{font-size:50px;animation:b 1.6s infinite}
 .st{border-radius:20px;padding:14px;color:#fff;box-shadow:0 4px 10px #0001}.card{transition:.15s}.card:hover{transform:translateY(-2px)}.m a{cursor:pointer;font-size:12px}
+.gen{display:flex;gap:10px;align-items:center;border-bottom:1px dashed var(--bd);padding:8px 0}.gl{width:130px;font-weight:700;font-size:13px;color:var(--pr)}.gr{display:flex;flex-wrap:wrap;gap:10px}.act{margin-top:4px}.act .btn{padding:2px 10px;font-size:12px}
 </style></head><body>
 <div id="login"><button class="btn s" style="position:fixed;top:10px;right:10px" onclick="toggleMode()">🌗 Mode</button><div class="box"><div class="mascot" id="le">🏡🐣</div><h2 id="lt">AQSHA Family</h2><p id="ls" style="color:var(--mu)">Rumah kita, cerita kita 💕</p>
 <input id="em" type="email" placeholder="Email"><input id="pw" type="password" placeholder="Password" onkeydown="if(event.key=='Enter')auth(0)">
 <button class="btn" onclick="auth(0)">Masuk</button>
 <p id="err" style="color:#e0536b"></p><a href="#" onclick="lupa();return false">Lupa password?</a></div></div>
-<div id="app"><div id="top"><button class="btn s" onclick="document.body.classList.toggle('mn')">☰</button><b>AQSHA Family</b></div><nav id="nav"></nav><main id="main"></main></div>
+<div id="app"><div id="top"><button class="btn s" onclick="document.body.classList.toggle('mn')">☰</button><b>AQSHA Family</b><button class="btn s" style="margin-left:auto" onclick="toggleMode()">🌗</button></div><nav id="nav"></nav><main id="main"></main></div>
 <dialog id="dlg"><form method="dialog" id="frm"></form></dialog>
 <div id="inst"><span id="it">📲 Pasang AQSHA Family di perangkat ini?</span><span><button class="btn" id="ib" onclick="inst()">Pasang</button> <button class="btn s" onclick="$('#inst').style.display='none'">✕</button></span></div>
 <script>
@@ -79,7 +80,7 @@ kontak:[['nama','Nama','text'],['jenis','Jenis','sel',['Darurat','Klinik/RS','Tu
 catatan:[['judul','Judul','text'],['jenis','Jenis','sel',['Belanjaan','Resep','Ide liburan','Memo']],['pic','PIC (Penanggung jawab)','sel',MEM],['isi','Isi','area'],['st','Dicentang','chk']],
 drive:[['jenis','Jenis','sel',['Dokumentasi','Berkas penting']],['judul','Judul','text'],['link','Link','url'],['ket','Keterangan','text']],
 buku:[['judul','Judul','text'],['penulis','Penulis','text'],['link','Link/File','url'],['ket','Catatan','text']],
-silsilah:[['nama','Nama','text'],['jk','Jenis kelamin','sel',['Laki-laki','Perempuan']],['sisi','Garis keluarga','sel',['Dari Ayah','Dari Ibu','Keluarga inti']],['pasangan','Nama pasangan','text'],['ortu','Nama salah satu orang tua (kosong = leluhur)','text'],['hub','Sebutan (mis. Kakek George)','text'],['lahir','Lahir','date'],['foto','Foto','img']],
+silsilah:[['nama','Nama','text'],['jk','Jenis kelamin','sel',['Laki-laki','Perempuan']],['sisi','Garis keluarga','sel',['Keluarga inti','Dari Ayah','Dari Ibu','Kakek dari Ayah','Kakek dari Ibu','Nenek dari Ayah','Nenek dari Ibu']],['pasangan','Nama pasangan','text'],['ortu','Nama salah satu orang tua (kosong = leluhur)','text'],['hub','Sebutan (mis. Kakek George)','text'],['lahir','Lahir','date'],['foto','Foto','img']],
 kesehatan:[['jenis','Jenis','sel',['Menu sehat','Penyakit','Obat','Riwayat penyakit']],['nama','Nama','text'],['ket','Manfaat / Keterangan','area'],['tgl','Tanggal','date']],
 evaluasi:[['tgl','Tanggal','date'],['jenis','Jenis','sel',['Problem-Solusi','Ibadah harian','Lainnya']],['oleh','Oleh','sel',MEM],['isi','Problem / Ibadah / Topik','area'],['solusi','Solusi / Catatan','area'],['skor','Skor ibadah (0-100)','num']],
 usaha:[['tgl','Tanggal','date'],['nama','Usaha','text'],['jenis','Jenis','sel',['Modal','Omzet','Biaya']],['jml','Jumlah','num'],['ket','Catatan','text']],
@@ -100,7 +101,7 @@ const DEF=[['dash','Dashboard','🏠'],['g1','Keluarga','👨‍👩‍👧'],['
 ['g2','Evaluasi','✅'],['problem','Problem-Solusi','🧩','g2'],['ibadah','Ibadah Harian','🕌','g2'],['evlain','Lainnya','✨','g2'],
 ['g3','Link Drive','📁'],['dokumentasi','Dokumentasi','📸','g3'],['berkas','Berkas Penting','🗂️','g3'],['buku','Buku/Library','📚','g3'],
 ['g4','Catatan','📝'],['kontak','Kontak Darurat','🚑','g4'],['memo','Catatan/Memo','🗒️','g4'],['aset','Inventaris & Aset Rumah','🔧'],['tugas','Tugas & Jadwal Rumah','🧹'],['usaha','Usaha/Bisnis','🏪']].map(a=>({k:a[0],l:a[1],i:a[2],p:a[3]||''}));
-const VER=4;let CFG={logo:'',color:'#ff7a59',theme:'oranye',menus:DEF},LG={t:'AQSHA Family',s:'Rumah kita, cerita kita 💕',e:'🏡🐣',c1:'',c2:'',logo:'',theme:''},PF=[],DG='gab',RF={per:'bln',dari:'',sampai:'',tipe:'',kat:'',sumber:''},RT=null,CFGID=null,U=null,P=null,PS=[],cur='dash',rows=[],all=[],ch=null,OPEN=new Set(['g1']),CM=new Date(),CT='',MS=[];CM.setDate(1);
+const VER=4,APPV='6';let CFG={logo:'',color:'#ff7a59',theme:'oranye',menus:DEF},LG={t:'AQSHA Family',s:'Rumah kita, cerita kita 💕',e:'🏡🐣',c1:'',c2:'',logo:'',theme:''},PF=[],DG='gab',RF={per:'bln',dari:'',sampai:'',tipe:'',kat:'',sumber:''},RT=null,CFGID=null,U=null,P=null,PS=[],cur='dash',rows=[],all=[],ch=null,OPEN=new Set(['g1']),CM=new Date(),CT='',MS=[];CM.setDate(1);
 const isG=k=>/^g/.test(k),mod=k=>L[k]?L[k].m:k,fl=k=>{const pr=(L[k]||{}).pre||{},inc=(pr.tipe||[])[0]=='Pemasukan';return(M[mod(k)]||M.custom).filter(f=>!(inc&&['sumber','untuk'].includes(f[0]))).map(f=>{const v=pr[f[0]];return v?[f[0],f[1],'sel',v]:f})};
 const allow=k=>(ACC[k]||'ain').includes(RLT[P.role]),vis=m=>isG(m.k)?CFG.menus.some(c=>c.p==m.k&&vis(c)):allow(m.k),title=()=>(CFG.menus.find(m=>m.k==cur)||{l:cur}).l;
 function msg(t,ok){const m=$('#err');m.textContent=t;m.style.color=ok?'#3dbb8a':'#e0536b'}
@@ -122,7 +123,7 @@ async function saveCfg(){if(CFGID)await sb.from('records').update({data:CFG}).eq
 function tgl(k){OPEN.has(k)?OPEN.delete(k):OPEN.add(k);nav()}
 function nv(p,d){return CFG.menus.filter(m=>m.p==p&&vis(m)).map(m=>`<a class="${m.k==cur?'on':''}" style="padding-left:${10+d*14}px" onclick="${isG(m.k)?`tgl('${m.k}')`:`go('${m.k}')`}">${esc(m.i)} ${esc(m.l)}${isG(m.k)?` <small>${OPEN.has(m.k)?'▾':'▸'}</small>`:''}</a>${isG(m.k)&&OPEN.has(m.k)?nv(m.k,d+1):''}`).join('')}
 function nav(){applyTheme(CFG.theme,CFG.color);$('#nav').innerHTML=`<div class="lg">${CFG.logo?`<img src="${CFG.logo}">`:'🏡'}<br>AQSHA Family<br><small>${P?esc(P.nama)+' · '+RL[P.role]:''}</small></div>`+(P&&P.role!='pending'?nv('',0):'')+
- (P&&P.role=='ayah'?`<a class="${cur=='set'?'on':''}" onclick="go('set')">⚙️ Setting General</a>`:'')+`<a onclick="toggleMode()">🌗 Mode: ${ML[gm()]}</a><a onclick="sb.auth.signOut().then(()=>location.reload())">🚪 Keluar</a>`}
+ (P&&P.role=='ayah'?`<a class="${cur=='set'?'on':''}" onclick="go('set')">⚙️ Setting General</a>`:'')+`<a onclick="toggleMode()">🌗 Mode: ${ML[gm()]}</a><a onclick="sb.auth.signOut().then(()=>location.reload())">🚪 Keluar</a><small style="display:block;text-align:center;color:var(--mu)">Versi ${APPV}</small>`}
 async function go(k){if(!['dash','chat','set'].includes(k)&&!allow(k))return;if(k=='set'&&P.role!='ayah')return;cur=k;document.body.classList.remove('mn');nav();if(ch){sb.removeChannel(ch);ch=null}
  if(k=='dash')return dash();if(k=='chat')return chat();if(k=='set')return setting();
  await load();ch=sb.channel('r'+k).on('postgres_changes',{event:'*',schema:'public',table:'records'},load).subscribe()}
@@ -180,17 +181,33 @@ function calG(){const y=CM.getFullYear(),m=CM.getMonth(),f=CM.getDay(),n=new Dat
  let h=`<div class="card wrap"><button class="btn s" onclick="cm(-1)">◀</button> <b>${CM.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}</b> <button class="btn s" onclick="cm(1)">▶</button><table class="cal"><tr>${['Min','Sen','Sel','Rab','Kam','Jum','Sab'].map(d=>`<th>${d}</th>`).join('')}</tr><tr>`+'<td></td>'.repeat(f);
  for(let d=1;d<=n;d++){if((f+d-1)%7==0&&d>1)h+='</tr><tr>';const ds=pf+'-'+String(d).padStart(2,'0');h+=`<td class="${ds==today()?'t':''}" onclick="edit(null,{tgl:'${ds}',pic:'${KF.pic}'})"><b>${d}</b>${(ev[d]||[]).map(e=>`<span class="ev">${esc(e)}</span>`).join('')}</td>`}
  return h+'</tr></table></div>'}
-function av(r){const d=r.data,f=d.foto||((PF.find(x=>x.data.nama==d.nama)||{data:{}}).data.foto);return`<div class="nd"><div class="av ${d.jk=='Perempuan'?'f':'m'}">${f?`<img src="${esc(f)}">`:d.jk=='Perempuan'?'🧕':d.jk=='Laki-laki'?'👨':'🙂'}</div><b>${esc(d.nama)}</b><small>${esc(d.hub||'')}</small></div>`}
-let SS='semua';
-function famTree(side){const full=[...rows].reverse(),R=full.filter(r=>!r.data.sisi||r.data.sisi=='Keluarga inti'||r.data.sisi==side),seen=new Set(),
- sp=r=>full.find(x=>x.id!=r.id&&((r.data.pasangan&&x.data.nama==r.data.pasangan)||(x.data.pasangan&&x.data.pasangan==r.data.nama)));
- const unit=r=>{if(seen.has(r.id))return'';seen.add(r.id);const s=sp(r);if(s)seen.add(s.id);const nm=[r.data.nama,s&&s.data.nama].filter(Boolean),
+function av(r){const d=r.data,f=d.foto||((PF.find(x=>x.data.nama==d.nama)||{data:{}}).data.foto);return`<div class="nd"><div class="av ${d.jk=='Perempuan'?'f':'m'}">${f?`<img src="${esc(f)}">`:d.jk=='Perempuan'?'🧕':d.jk=='Laki-laki'?'👨':'🙂'}</div><b>${esc(d.nama)}</b><small>${esc(d.hub||'')}</small><small style="color:var(--pr);display:block">${esc(GL[r.id]||'')}</small></div>`}
+let SS='semua',SR=null,GL={};
+function genCalc(){GL={};const full=[...rows].reverse(),ref=full.find(r=>r.data.nama==SR);if(!ref)return null;
+ const sp=r=>full.find(x=>x.id!=r.id&&((r.data.pasangan&&x.data.nama==r.data.pasangan)||(x.data.pasangan&&x.data.pasangan==r.data.nama))),
+ par=x=>{const p=full.find(r=>r.data.nama==x.data.ortu);if(!p)return[];const q=sp(p);return q?[p,q]:[p]},
+ chi=xs=>{const n=new Set(xs.flatMap(x=>{const q=sp(x);return[x.data.nama,q&&q.data.nama]}).filter(Boolean));return full.filter(r=>r.data.ortu&&n.has(r.data.ortu))},
+ UP=['Orang tua','Kakek / Nenek','Buyut (leluhur ke-3)','Canggah (leluhur ke-4)','Wareng (leluhur ke-5)','Udeg-udeg / Gantung Siwur (leluhur ke-6)','Kiyut / Gropak Senthe (leluhur ke-7)'],
+ DN=['Anak','Cucu','Cicit / Buyut','Piut / Piwur','Canggah','Wareng','Udeg-udeg'],seen=new Set([ref.id]),up=[],dn=[],
+ walk=(f,L,pf,out)=>{let cur=[ref];for(let k=0;k<12;k++){const n=[...new Map(f(cur).filter(x=>!seen.has(x.id)).map(x=>[x.id,x])).values()];if(!n.length)break;const l=L[k]||pf+(k+1);n.forEach(x=>{seen.add(x.id);GL[x.id]=l});out.push([l,n]);cur=n}};
+ walk(c=>c.flatMap(par),UP,'Leluhur ke-',up);walk(chi,DN,'Keturunan ke-',dn);
+ const q=sp(ref);GL[ref.id]='Titik acuan';if(q)GL[q.id]='Pasangan';return{ref,q,up,dn}}
+function genView(g){if(!g)return'<div class="card">Pilih <b>Titik acuan</b> (mis. Biya Qodli atau Alesha) untuk melihat urutan generasi.</div>';
+ const row=(l,a)=>`<div class="gen"><div class="gl">${esc(l)}</div><div class="gr">${a.map(x=>av(x)).join('')}</div></div>`;
+ return`<div class="card"><h3>⬆️ A. Leluhur ke atas</h3>${[...g.up].reverse().map(([l,a])=>row(l,a)).join('')||'<small>Belum ada data leluhur (isi kolom Nama orang tua).</small>'}</div><div class="card"><h3>⭐ Titik acuan</h3>${row('Diri sendiri'+(g.q?' & pasangan':''),[g.ref,...(g.q?[g.q]:[])])}</div><div class="card"><h3>⬇️ B. Keturunan ke bawah</h3>${g.dn.map(([l,a])=>row(l,a)).join('')||'<small>Belum ada keturunan.</small>'}</div>`}
+function famTree(side){const full=[...rows].reverse(),A=side=='*',sd=r=>r.data.sisi||'Keluarga inti',R=A?full:full.filter(r=>sd(r)==side||sd(r)=='Keluarga inti'),seen=new Set(),
+ sp=r=>full.find(x=>x.id!=r.id&&((r.data.pasangan&&x.data.nama==r.data.pasangan)||(x.data.pasangan&&x.data.pasangan==r.data.nama))),pr=r=>full.find(x=>x.data.nama==r.data.ortu);
+ const unit=r=>{if(seen.has(r.id))return'';seen.add(r.id);const q=sp(r);if(q&&!pr(q))seen.add(q.id);const nm=[r.data.nama,q&&q.data.nama].filter(Boolean),
   kids=R.filter(x=>!seen.has(x.id)&&x.data.ortu&&nm.includes(x.data.ortu)).map(unit).join('');
-  return`<li><div class="cp ${s||r.data.pasangan?'two':''}">${av(r)}${s?av(s):r.data.pasangan?`<div class="nd"><div class="av">💍</div><b>${esc(r.data.pasangan)}</b></div>`:''}</div>${kids?`<ul>${kids}</ul>`:''}</li>`},
- roots=R.filter(r=>!r.data.ortu&&(r.data.sisi||'Keluarga inti')==side).map(unit).join('');return roots?`<ul>${roots}</ul>`:''}
-function silV(){const S=[['Dari Ayah','👨 Keluarga dari Ayah (Biya)'],['Dari Ibu','🧕 Keluarga dari Ibu (Miya)'],['Keluarga inti','🏡 Keluarga inti']],
- h=S.filter(x=>SS=='semua'||SS==x[0]).map(([k,l])=>{const t=famTree(k);return t?`<div class="card wrap ft"><h3>${l}</h3><div style="display:inline-block;min-width:100%">${t}</div></div>`:''}).join('');
- return`<div class="tb"><label>Tampilkan: </label><select onchange="SS=this.value;view()"><option value="semua">Semua garis keluarga</option>${S.map(x=>`<option value="${x[0]}" ${SS==x[0]?'selected':''}>${x[0]}</option>`).join('')}</select></div>`+(h||'<div class="card">Belum ada data. Tambahkan leluhur (kolom orang tua kosong) dan pilih Garis keluarga Dari Ayah atau Dari Ibu, lalu isi anak-anaknya dengan nama orang tua. Anak Biya dan Miya cukup dipilih "Keluarga inti".</div>')}
+  return`<li><div class="cp ${q||r.data.pasangan?'two':''}">${av(r)}${q?av(q):r.data.pasangan?`<div class="nd"><div class="av">💍</div><b>${esc(r.data.pasangan)}</b></div>`:''}</div>${kids?`<ul>${kids}</ul>`:''}</li>`},
+ roots=R.filter(r=>A?!r.data.ortu:sd(r)==side&&(!pr(r)||sd(pr(r))!=side)).map(unit).join('');return roots?`<ul>${roots}</ul>`:''}
+function silV(){if(SR===null)SR=(rows.find(r=>r.data.nama==P.nama)||{data:{}}).data.nama||'';const g=genCalc(),
+ S=[['Keluarga inti','🏡 Keluarga inti'],['Dari Ayah','👨 Garis dari Ayah'],['Dari Ibu','🧕 Garis dari Ibu'],['Kakek dari Ayah','👴 Garis Kakek (dari Ayah)'],['Kakek dari Ibu','👴 Garis Kakek (dari Ibu)'],['Nenek dari Ayah','👵 Garis Nenek (dari Ayah)'],['Nenek dari Ibu','👵 Garis Nenek (dari Ibu)']],
+ sec=(l,t)=>t?`<div class="card wrap ft"><h3>${l}</h3><div style="display:inline-block;min-width:100%">${t}</div></div>`:'',o=(v,l)=>`<option value="${v}" ${SS==v?'selected':''}>${l}</option>`,
+ sel=`<div class="tb card"><label>Tampilkan: </label><select onchange="SS=this.value;view()">${o('semua','Semua garis (terpisah)')}${o('utuh','Bagan utuh tersambung')}${o('generasi','Per generasi (leluhur & keturunan)')}${S.map(x=>o(x[0],x[1])).join('')}</select>
+ <label> Titik acuan: </label><select onchange="SR=this.value;view()"><option value="">(tanpa)</option>${[...new Set(rows.map(r=>r.data.nama))].map(n=>`<option ${SR==n?'selected':''}>${esc(n)}</option>`).join('')}</select></div>`,
+ body=SS=='generasi'?genView(g):SS=='utuh'?sec('🌳 Bagan utuh',famTree('*')):S.filter(x=>SS=='semua'||SS==x[0]).map(([k,l])=>sec(l,famTree(k))).join('');
+ return sel+(body||'<div class="card">Belum ada data untuk tampilan ini. Isi leluhur dulu (kolom orang tua kosong), pilih Garis keluarga, lalu tambahkan anak dengan nama orang tuanya. Tips: tandai Biya, Miya, dan anak-anak sebagai "Keluarga inti" agar mereka muncul di garis Ayah dan Ibu sekaligus.</div>')}
 function pimg(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas'),k=Math.min(1,240/Math.max(i.width,i.height));c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);el.nextElementSibling.value=c.toDataURL('image/jpeg',.8)};i.src=r.result};r.readAsDataURL(f)}
 function wa(r){const n=r.data.petugas||r.data.pemohon||r.data.pic||r.data.oleh||r.data.nama,u=PS.find(p=>p.nama==n);return`https://wa.me/${u&&u.hp?ph(u.hp):''}?text=`+encodeURIComponent(`[AQSHA Family] ${title()}: `+Object.values(r.data).filter(Boolean).join(' | '))}
 function view(){const k=cur,f=fl(k),l=L[k]||{},mi=CFG.menus.find(m=>m.k==k)||{i:'⭐',l:k};if(l.v=='rekap')return rekap();
@@ -245,10 +262,13 @@ async function chat(){MS=(await sb.from('messages').select('*').order('created_a
  <div class="em">${EMO.map(e=>`<span onclick="$('#mt').value+='${e}'">${e}</span>`).join('')}<br>Stiker: ${STK.map(e=>`<span style="font-size:36px" onclick="send('${e}',1)">${e}</span>`).join('')}</div>
  <input id="mt" placeholder="Tulis pesan..." onkeydown="if(event.key=='Enter')send()"><button class="btn" onclick="send()">Kirim</button></div>`;rc();
  ch=sb.channel('chat').on('postgres_changes',{event:'*',schema:'public',table:'messages'},p=>{if(p.eventType=='INSERT')MS.push(p.new);else if(p.eventType=='UPDATE')MS=MS.map(m=>m.id==p.new.id?p.new:m);else MS=MS.filter(m=>m.id!=p.old.id);rc()}).subscribe()}
-function rc(){const d=$('#msgs');if(!d)return;d.innerHTML=MS.filter(m=>CT?(m.user_id==U.id&&m.to_id==CT)||(m.user_id==CT&&m.to_id==U.id):!m.to_id).map(m=>{const s=m.isi.startsWith('::s::');
- return`<div class="m ${m.user_id==U.id?'me':''}"><small>${esc(m.nama)}${m.edited?' · diedit':''}</small><span style="float:right;margin-left:10px">${m.user_id==U.id&&!s?`<a onclick="emsg(${m.id})" title="Edit">✏️</a> `:''}${m.user_id==U.id||P.role=='ayah'?`<a onclick="dmsg(${m.id})" title="Hapus">🗑️</a>`:''}</span><br><span style="font-size:${s?48:16}px">${esc(s?m.isi.slice(5):m.isi)}</span></div>`}).join('');d.scrollTop=1e9}
-async function emsg(id){const m=MS.find(x=>x.id==id),t=prompt('Edit pesan',m.isi);if(t==null||!t.trim())return;const e=(await sb.from('messages').update({isi:t.trim(),edited:true}).eq('id',id)).error;if(e)return alert(e.message);m.isi=t.trim();m.edited=true;rc()}
-async function dmsg(id){if(!confirm('Hapus pesan ini?'))return;const e=(await sb.from('messages').delete().eq('id',id)).error;if(e)return alert(e.message);MS=MS.filter(x=>x.id!=id);rc()}
+function rc(){const d=$('#msgs');if(!d)return;d.innerHTML=MS.filter(m=>CT?(m.user_id==U.id&&m.to_id==CT)||(m.user_id==CT&&m.to_id==U.id):!m.to_id).map(m=>{const s=m.isi.startsWith('::s::'),me=m.user_id==U.id,hm=new Date(m.created_at).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+ return`<div class="m ${me?'me':''}"><small>${esc(m.nama)} · ${hm}${m.edited?' · <i>diedit</i>':''}</small><br><span style="font-size:${s?48:16}px">${esc(s?m.isi.slice(5):m.isi)}</span>${me||P.role=='ayah'?`<div class="act">${me&&!s?`<button class="btn s" onclick="emsg(${m.id})">✏️ Edit</button> `:''}<button class="btn d" onclick="dmsg(${m.id})">🗑️ Hapus</button></div>`:''}</div>`}).join('');d.scrollTop=1e9}
+const HINT='\n(Jika baru pertama memakai edit/hapus pesan, jalankan ulang schema.sql di Supabase.)';
+function emsg(id){const m=MS.find(x=>x.id==id);$('#frm').innerHTML=`<h3>Edit pesan</h3><textarea name="t" rows="3">${esc(m.isi)}</textarea><button class="btn" value="ok">Simpan</button> <button class="btn s" value="x">Batal</button>`;
+ $('#dlg').onclose=async()=>{if($('#dlg').returnValue!='ok')return;const t=(new FormData($('#frm')).get('t')||'').trim();if(!t||t==m.isi)return;const e=(await sb.from('messages').update({isi:t,edited:true}).eq('id',id)).error;if(e)return alert(e.message+HINT);m.isi=t;m.edited=true;rc()};
+ $('#dlg').returnValue='';$('#dlg').showModal()}
+async function dmsg(id){if(!confirm('Hapus pesan ini?'))return;const e=(await sb.from('messages').delete().eq('id',id)).error;if(e)return alert(e.message+HINT);MS=MS.filter(x=>x.id!=id);rc()}
 async function send(t,s){t=t||$('#mt').value.trim();if(!t)return;$('#mt').value='';const e=(await sb.from('messages').insert({isi:s?'::s::'+t:t,nama:P.nama,to_id:CT||null})).error;if(e)alert(e.message)}
 function fm(p,d){return CFG.menus.filter(m=>m.p==p).map(m=>{const i=CFG.menus.indexOf(m);return`<tr><td style="padding-left:${d*18}px">${esc(m.i)} ${esc(m.l)} ${isG(m.k)?'📂':''}</td><td><button class="btn s" onclick="renm(${i})">✏️</button> <button class="btn d" onclick="rmm(${i})">🗑️</button></td></tr>`+fm(m.k,d+1)}).join('')}
 async function setting(){PS=(await sb.from('profiles').select('*').order('created_at')).data||[];
@@ -280,7 +300,8 @@ function applyLogin(){$('#lt').textContent=LG.t;$('#ls').textContent=LG.s;$('#le
 async function saveLg(){LG.logo=CFG.logo||'';LG.theme=CFG.theme||'';const e=(await sb.from('app_public').upsert({id:1,data:LG})).error;if(e)alert(e.message)}
 async function lgSave(rs){if(rs)LG.c1=LG.c2='';else{LG.t=$('#l1').value;LG.s=$('#l2').value;LG.e=$('#l3').value;LG.c1=$('#l4').value;LG.c2=$('#l5').value}await saveLg();applyLogin();setting()}
 const QT=['Hari ini penuh berkah 🌟','Keluarga adalah rumah terbaik 🏡','Bismillah, semangat! 💪','Sedikit demi sedikit lama-lama jadi bukit 🐷','Peluk hangat untuk semua 🤗'],QK=[['rekap','📊','Rekap'],['kalender','📅','Kalender'],['tugas','🧹','Tugas'],['chat','💬','Chat'],['kontak','🚑','Darurat'],['pengajuan','🙏','Pengajuan']];
-function hero(){const d=new Date();return`<div class="hero"><div class="e">${['🏡','🐣','🌈','🧸','🌻'][d.getDay()%5]}</div><div><div class="big">Halo, ${esc(P.nama)}! 👋</div><small>${d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</small><div>${QT[d.getDate()%QT.length]}</div></div><div style="margin-left:auto;font-size:26px">👨🧕👧👧👧</div></div>`}
+const sapa=()=>{const h=new Date().getHours();return h<11?'Selamat pagi ☀️':h<15?'Selamat siang 🌤️':h<18?'Selamat sore 🌇':'Selamat malam 🌙'};
+function hero(){const d=new Date();return`<div class="hero"><div class="e">${['🏡','🐣','🌈','🧸','🌻'][d.getDay()%5]}</div><div><div class="big">${sapa()}, ${esc(P.nama)}! 👋</div><small>${d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</small><div>${QT[d.getDate()%QT.length]}</div></div><div style="margin-left:auto;font-size:26px">👨🧕👧👧👧</div></div>`}
 function quick(){return`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(90px,1fr))">${QK.filter(q=>allow(q[0])).map(q=>`<div class="card" style="text-align:center;cursor:pointer" onclick="go('${q[0]}')"><div style="font-size:30px">${q[1]}</div>${q[2]}</div>`).join('')}</div>`}
 let DP;addEventListener('beforeinstallprompt',e=>{e.preventDefault();DP=e;$('#inst').style.display='flex'});
 function inst(){DP&&DP.prompt();DP=null;$('#inst').style.display='none'}

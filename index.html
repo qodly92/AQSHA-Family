@@ -44,8 +44,10 @@ dialog{border:0;border-radius:24px;padding:18px;max-width:420px;width:92%;backgr
 .nd{width:96px}.nd b{display:block;font-size:12px}.nd small{font-size:11px;color:var(--mu)}
 .av{width:74px;height:74px;border-radius:50%;border:3px solid var(--pr);background:var(--pr2);display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden;margin:0 auto 4px}.av img{width:100%;height:100%;object-fit:cover}
 .sw{display:inline-block;width:46px;height:46px;border-radius:50%;border:3px solid var(--bd);cursor:pointer;margin:3px}.sw.on{border-color:var(--tx)}.av.m{border-color:#6aa5ff}.av.f{border-color:#f06292}
+.hero{background:linear-gradient(135deg,var(--pr),var(--pr2));color:#fff;border-radius:24px;padding:16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.hero .e{font-size:50px;animation:b 1.6s infinite}
+.st{border-radius:20px;padding:14px;color:#fff;box-shadow:0 4px 10px #0001}.card{transition:.15s}.card:hover{transform:translateY(-2px)}.m a{cursor:pointer;font-size:12px}
 </style></head><body>
-<div id="login"><div class="box"><div class="mascot" id="le">🏡🐣</div><h2 id="lt">AQSHA Family</h2><p id="ls" style="color:var(--mu)">Rumah kita, cerita kita 💕</p>
+<div id="login"><button class="btn s" style="position:fixed;top:10px;right:10px" onclick="toggleMode()">🌗 Mode</button><div class="box"><div class="mascot" id="le">🏡🐣</div><h2 id="lt">AQSHA Family</h2><p id="ls" style="color:var(--mu)">Rumah kita, cerita kita 💕</p>
 <input id="em" type="email" placeholder="Email"><input id="pw" type="password" placeholder="Password" onkeydown="if(event.key=='Enter')auth(0)">
 <button class="btn" onclick="auth(0)">Masuk</button>
 <p id="err" style="color:#e0536b"></p><a href="#" onclick="lupa();return false">Lupa password?</a></div></div>
@@ -87,19 +89,19 @@ sop:[['jenis','Jenis','sel',['SOP','TUPOKSI']],['peran','Untuk','sel',['Semua','
 custom:[['judul','Judul','text'],['tgl','Tanggal','date'],['link','Link','url'],['isi','Isi','area']]};
 const K=(t,c)=>({m:'keuangan',v:'keu',pre:{tipe:[t],kat:c}}),J=(m,j,v)=>({m,v,pre:{jenis:j}});
 const L={profil:{m:'profil'},silsilah:{m:'silsilah',v:'tree'},sop:{m:'sop'},kalender:{m:'kalender',v:'cal'},
-pemasukan:K('Pemasukan',CAT.Pemasukan),tabungan:K('Pengeluaran',CAT['Tabungan Wajib']),cicilan:K('Pengeluaran',CAT.Cicilan),kebutuhan:K('Pengeluaran',CAT.Kebutuhan),lainnya:K('Pengeluaran',CAT.Lainnya),
+pemasukan:{...K('Pemasukan',CAT.Pemasukan),v:'src'},tabungan:K('Pengeluaran',CAT['Tabungan Wajib']),cicilan:K('Pengeluaran',CAT.Cicilan),kebutuhan:K('Pengeluaran',CAT.Kebutuhan),lainnya:K('Pengeluaran',CAT.Lainnya),
 rekap:{m:'keuangan',v:'rekap'},anggaran:{m:'anggaran'},pengajuan:{m:'pengajuan'},menusehat:J('kesehatan',['Menu sehat']),penyakit:J('kesehatan',['Penyakit','Obat']),riwayat:J('kesehatan',['Riwayat penyakit']),
 problem:J('evaluasi',['Problem-Solusi'],'evl'),ibadah:J('evaluasi',['Ibadah harian'],'evl'),evlain:J('evaluasi',['Lainnya'],'evl'),
 dokumentasi:J('drive',['Dokumentasi']),berkas:J('drive',['Berkas penting']),buku:{m:'buku'},kontak:{m:'kontak'},memo:{m:'catatan'},aset:{m:'aset'},tugas:{m:'tugas'},usaha:{m:'usaha'}};
 const ACC={rekap:'ai',pemasukan:'ai',tabungan:'ai',cicilan:'ai',kebutuhan:'ai',lainnya:'ai',anggaran:'ai',usaha:'ai'};
 const DEF=[['dash','Dashboard','🏠'],['g1','Keluarga','👨‍👩‍👧'],['profil','Data Profil','🙂','g1'],['silsilah','Silsilah','🌳','g1'],['sop','SOP & Tupoksi','📋','g1'],['kalender','Kalender Kegiatan','📅','g1'],
-['gk','Keuangan','💰'],['rekap','Rekapitulasi','📊','gk'],['pemasukan','Pemasukan','⬇️','gk'],['tabungan','Tabungan Wajib','🏦','gk'],['cicilan','Cicilan','🧾','gk'],['kebutuhan','Kebutuhan','🛒','gk'],['lainnya','Lainnya','📦','gk'],['anggaran','Anggaran','🎯','gk'],['pengajuan','Pengajuan Kebutuhan','🙏','gk'],
+['gk','Keuangan','💰'],['rekap','Rekapitulasi & Diagram','📊','gk'],['pemasukan','Pemasukan / Sumber Dana','⬇️','gk'],['gx','Pengeluaran','⬆️','gk'],['tabungan','Tabungan Wajib','🏦','gx'],['cicilan','Cicilan','🧾','gx'],['kebutuhan','Kebutuhan','🛒','gx'],['lainnya','Lainnya','📦','gx'],['anggaran','Anggaran','🎯','gx'],['pengajuan','Pengajuan Kebutuhan','🙏','gk'],
 ['chat','Chat','💬','g1'],['gs','Kesehatan','🩺','g1'],['menusehat','Menu Sehat','🥗','gs'],['penyakit','Penyakit & Obat','💊','gs'],['riwayat','Riwayat Penyakit','📜','gs'],
 ['g2','Evaluasi','✅'],['problem','Problem-Solusi','🧩','g2'],['ibadah','Ibadah Harian','🕌','g2'],['evlain','Lainnya','✨','g2'],
 ['g3','Link Drive','📁'],['dokumentasi','Dokumentasi','📸','g3'],['berkas','Berkas Penting','🗂️','g3'],['buku','Buku/Library','📚','g3'],
 ['g4','Catatan','📝'],['kontak','Kontak Darurat','🚑','g4'],['memo','Catatan/Memo','🗒️','g4'],['aset','Inventaris & Aset Rumah','🔧'],['tugas','Tugas & Jadwal Rumah','🧹'],['usaha','Usaha/Bisnis','🏪']].map(a=>({k:a[0],l:a[1],i:a[2],p:a[3]||''}));
-const VER=3;let CFG={logo:'',color:'#ff7a59',theme:'oranye',menus:DEF},LG={t:'AQSHA Family',s:'Rumah kita, cerita kita 💕',e:'🏡🐣',c1:'',c2:'',logo:'',theme:''},PF=[],DG='gab',RF={per:'bln',dari:'',sampai:'',tipe:'',kat:'',sumber:''},RT=null,CFGID=null,U=null,P=null,PS=[],cur='dash',rows=[],all=[],ch=null,OPEN=new Set(['g1']),CM=new Date(),CT='',MS=[];CM.setDate(1);
-const isG=k=>/^g/.test(k),mod=k=>L[k]?L[k].m:k,fl=k=>(M[mod(k)]||M.custom).map(f=>{const v=((L[k]||{}).pre||{})[f[0]];return v?[f[0],f[1],'sel',v]:f});
+const VER=4;let CFG={logo:'',color:'#ff7a59',theme:'oranye',menus:DEF},LG={t:'AQSHA Family',s:'Rumah kita, cerita kita 💕',e:'🏡🐣',c1:'',c2:'',logo:'',theme:''},PF=[],DG='gab',RF={per:'bln',dari:'',sampai:'',tipe:'',kat:'',sumber:''},RT=null,CFGID=null,U=null,P=null,PS=[],cur='dash',rows=[],all=[],ch=null,OPEN=new Set(['g1']),CM=new Date(),CT='',MS=[];CM.setDate(1);
+const isG=k=>/^g/.test(k),mod=k=>L[k]?L[k].m:k,fl=k=>{const pr=(L[k]||{}).pre||{},inc=(pr.tipe||[])[0]=='Pemasukan';return(M[mod(k)]||M.custom).filter(f=>!(inc&&['sumber','untuk'].includes(f[0]))).map(f=>{const v=pr[f[0]];return v?[f[0],f[1],'sel',v]:f})};
 const allow=k=>(ACC[k]||'ain').includes(RLT[P.role]),vis=m=>isG(m.k)?CFG.menus.some(c=>c.p==m.k&&vis(c)):allow(m.k),title=()=>(CFG.menus.find(m=>m.k==cur)||{l:cur}).l;
 function msg(t,ok){const m=$('#err');m.textContent=t;m.style.color=ok?'#3dbb8a':'#e0536b'}
 function fail(e){$('#main').innerHTML='<div class="card">⚠️ '+esc(e.message||e)+'<br><small>Pastikan schema.sql sudah dijalankan dan SB_URL/SB_KEY benar.</small></div>'}
@@ -120,7 +122,7 @@ async function saveCfg(){if(CFGID)await sb.from('records').update({data:CFG}).eq
 function tgl(k){OPEN.has(k)?OPEN.delete(k):OPEN.add(k);nav()}
 function nv(p,d){return CFG.menus.filter(m=>m.p==p&&vis(m)).map(m=>`<a class="${m.k==cur?'on':''}" style="padding-left:${10+d*14}px" onclick="${isG(m.k)?`tgl('${m.k}')`:`go('${m.k}')`}">${esc(m.i)} ${esc(m.l)}${isG(m.k)?` <small>${OPEN.has(m.k)?'▾':'▸'}</small>`:''}</a>${isG(m.k)&&OPEN.has(m.k)?nv(m.k,d+1):''}`).join('')}
 function nav(){applyTheme(CFG.theme,CFG.color);$('#nav').innerHTML=`<div class="lg">${CFG.logo?`<img src="${CFG.logo}">`:'🏡'}<br>AQSHA Family<br><small>${P?esc(P.nama)+' · '+RL[P.role]:''}</small></div>`+(P&&P.role!='pending'?nv('',0):'')+
- (P&&P.role=='ayah'?`<a class="${cur=='set'?'on':''}" onclick="go('set')">⚙️ Setting General</a>`:'')+`<a onclick="sb.auth.signOut().then(()=>location.reload())">🚪 Keluar</a>`}
+ (P&&P.role=='ayah'?`<a class="${cur=='set'?'on':''}" onclick="go('set')">⚙️ Setting General</a>`:'')+`<a onclick="toggleMode()">🌗 Mode: ${ML[gm()]}</a><a onclick="sb.auth.signOut().then(()=>location.reload())">🚪 Keluar</a>`}
 async function go(k){if(!['dash','chat','set'].includes(k)&&!allow(k))return;if(k=='set'&&P.role!='ayah')return;cur=k;document.body.classList.remove('mn');nav();if(ch){sb.removeChannel(ch);ch=null}
  if(k=='dash')return dash();if(k=='chat')return chat();if(k=='set')return setting();
  await load();ch=sb.channel('r'+k).on('postgres_changes',{event:'*',schema:'public',table:'records'},load).subscribe()}
@@ -142,6 +144,11 @@ function srcC(a){const S=[...CAT.Pemasukan,'Belum ditentukan'],t=(ty,k)=>a.filte
  const p=ty=>pie(S.map(k=>[k,t(ty,k),rp(t(ty,k))]).filter(x=>x[1]));
  return`<div class="grid"><div class="card"><b>Pemasukan per sumber dana</b>${p('Pemasukan')}</div><div class="card"><b>Pengeluaran per sumber dana</b>${p('Pengeluaran')}</div></div>`}
 function detail(a){return`<div class="card wrap"><b>Rincian transaksi (${a.length})</b><table><tr><th>Tanggal</th><th>Tipe</th><th>Kategori</th><th>Sumber dana</th><th>Untuk</th><th>Jumlah</th><th>Ket.</th></tr>${[...a].sort((x,y)=>(y.data.tgl||'').localeCompare(x.data.tgl||'')).slice(0,200).map(x=>{const d=x.data;return`<tr><td>${esc(d.tgl)}</td><td>${esc(d.tipe)}</td><td>${esc(d.kat)}</td><td>${esc(src(d))}</td><td>${esc(d.untuk)}</td><td>${rp(d.jml)}</td><td>${esc(d.cat)}</td></tr>`}).join('')}</table></div>`}
+let SM='';
+function srcD(a){const b=SM?a.filter(r=>(r.data.tgl||'').startsWith(SM)):a,S=[...CAT.Pemasukan,'Belum ditentukan'],t=(ty,k)=>b.filter(r=>r.data.tipe==ty&&src(r.data)==k).reduce((x,r)=>x+(+r.data.jml||0),0);
+ return`<div class="tb"><label>Bulan: </label><input type="month" value="${SM}" onchange="SM=this.value;view()"> <button class="btn s" onclick="SM='';view()">Semua waktu</button></div><div class="grid">`+S.map((k,i)=>{const m=t('Pemasukan',k),e=t('Pengeluaran',k);if(!m&&!e)return'';
+  const by=sumBy(b.filter(r=>src(r.data)==k),'Pengeluaran',d=>d.kat);
+  return`<div class="card" style="border-top:6px solid ${COL[i%8]}"><b>${esc(k)}</b><div class="big" style="color:var(--ok)">${rp(m)}</div><small>Pengeluaran ${rp(e)} · Sisa ${rp(m-e)}</small><p><b>Dipakai untuk:</b></p>${bars(Object.entries(by).sort((x,y)=>y[1]-x[1]).map(([n,v])=>[n,v,COL[i%8]]),rp)}</div>`}).join('')+'</div>'}
 function keuC(a){const m=a.filter(r=>(r.data.tgl||'').startsWith(mo(0)));
  return dgSel()+flow(a,[5,4,3,2,1,0].map(mo),t=>t.slice(0,7))+srcC(a)+`<div class="grid">${DG=='sep'?`<div class="card"><b>Sumber pemasukan bulan ini</b>${pi(sumBy(m,'Pemasukan',d=>d.kat))}</div>`:''}<div class="card"><b>Pengeluaran bulan ini</b>${pi(sumBy(m,'Pengeluaran',d=>grp(d.kat)))}</div></div>`}
 const wk=t=>{const d=new Date(t+'T00:00:00');if(isNaN(d))return'';d.setDate(d.getDate()-(d.getDay()+6)%7);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},
@@ -160,7 +167,7 @@ function rview(){const r=RF,pf=PK[r.per],a=all.filter(x=>{const d=x.data;return 
  <button class="btn s" onclick="RF={per:'bln',dari:'',sampai:'',tipe:'',kat:'',sumber:''};rview()">Reset</button>
  <select onchange="exp(this.value);this.value=''"><option value="">⬇️ Export...</option><option value="xlsx">Excel</option><option value="pdf">PDF</option><option value="jpg">JPG</option><option value="doc">Word (Doc)</option><option value="csv">CSV</option></select></div>
  ${dgSel()}${flow(a,ks.slice(0,12).reverse(),pf)}${srcC(a)}
- <div class="grid"><div class="card"><b>Pengeluaran per kelompok</b>${pi(sumBy(a,'Pengeluaran',d=>grp(d.kat)))}</div><div class="card"><b>Pengeluaran per kategori</b>${bars(Object.entries(pe).sort((x,y)=>y[1]-x[1]).map(([k,v],i)=>[k,v,COL[i%8]]),rp)}</div></div>
+ <div class="grid"><div class="card"><b>Pengeluaran per kelompok</b>${pi(sumBy(a,'Pengeluaran',d=>grp(d.kat)))}</div><div class="card"><b>Pengeluaran per kategori</b>${bars(Object.entries(pe).sort((x,y)=>y[1]-x[1]).map(([k,v],i)=>[k,v,COL[i%8]]),rp)}</div><div class="card"><b>Pengeluaran untuk (anggota/objek)</b>${pi(sumBy(a,'Pengeluaran',d=>d.untuk&&d.untuk!='-'?d.untuk:'Umum'))}</div><div class="card"><b>Pemasukan per kategori</b>${pi(sumBy(a,'Pemasukan',d=>d.kat))}</div></div>
  <div class="card wrap" id="tbl"><table><tr>${RT.h.map(h=>`<th>${h}</th>`).join('')}</tr>${RT.b.map(x=>`<tr>${x.map((c,i)=>`<td>${i?rp(c):esc(c)}</td>`).join('')}</tr>`).join('')}</table></div>${detail(a)}`}
 function evlC(a){const c={},s={};a.forEach(r=>{const d=r.data;c[d.jenis]=(c[d.jenis]||0)+1;if(d.jenis=='Ibadah harian'&&d.oleh)(s[d.oleh]=s[d.oleh]||[]).push(+d.skor||0)});
  return`<div class="grid"><div class="card"><b>Jumlah evaluasi</b>${pie(Object.entries(c))}</div><div class="card"><b>Rata-rata skor ibadah</b>${bars(Object.entries(s).map(([k,v])=>[k,Math.round(v.reduce((x,y)=>x+y,0)/v.length)]))}</div></div>`}
@@ -187,7 +194,7 @@ function silV(){const S=[['Dari Ayah','👨 Keluarga dari Ayah (Biya)'],['Dari I
 function pimg(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas'),k=Math.min(1,240/Math.max(i.width,i.height));c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);el.nextElementSibling.value=c.toDataURL('image/jpeg',.8)};i.src=r.result};r.readAsDataURL(f)}
 function wa(r){const n=r.data.petugas||r.data.pemohon||r.data.pic||r.data.oleh||r.data.nama,u=PS.find(p=>p.nama==n);return`https://wa.me/${u&&u.hp?ph(u.hp):''}?text=`+encodeURIComponent(`[AQSHA Family] ${title()}: `+Object.values(r.data).filter(Boolean).join(' | '))}
 function view(){const k=cur,f=fl(k),l=L[k]||{},mi=CFG.menus.find(m=>m.k==k)||{i:'⭐',l:k};if(l.v=='rekap')return rekap();
- const x=l.v=='tree'?silV():l.v=='cal'?picBar()+calG()+picSum():l.v=='keu'?keuC(all):l.v=='evl'?evlC(all):'';
+ const x=l.v=='tree'?silV():l.v=='cal'?picBar()+calG()+picSum():l.v=='keu'?keuC(all):l.v=='src'?srcD(all):l.v=='evl'?evlC(all):'';
  const jm=f.some(a=>a[0]=='jml')?rows.reduce((s,r)=>s+(+r.data.jml||0),0):null;
  $('#main').innerHTML=`<h2>${esc(mi.i)} ${esc(mi.l)}</h2><div class="tb"><button class="btn" onclick="edit()">➕ Tambah</button>
  <select onchange="exp(this.value);this.value=''"><option value="">⬇️ Export...</option><option value="xlsx">Excel</option><option value="pdf">PDF</option><option value="jpg">JPG</option><option value="doc">Word (Doc)</option><option value="csv">CSV</option></select>
@@ -223,13 +230,13 @@ const imp=f=>f&&f.arrayBuffer().then(impBuf);
 async function impUrl(){const u=prompt('URL file Excel/CSV (harus mengizinkan CORS):');if(u)impBuf(await(await fetch(u)).arrayBuffer())}
 async function dash(){if(P.role!='ayah'){const g=async k=>(await sb.from('records').select('data').eq('module',k)).data||[],td=today();
   const[kl,as,tg]=await Promise.all(['kalender','aset','tugas'].map(g)),soon=[...kl.map(x=>[x.data.tgl,'📅 '+esc(x.data.judul)+(x.data.pic?' · PIC '+esc(x.data.pic):'')]),...as.map(x=>[x.data.tgl,'🔧 Servis '+esc(x.data.nama)])].filter(x=>x[0]>=td).sort().slice(0,8),mine=tg.filter(x=>x.data.petugas==P.nama&&!x.data.st);
-  $('#main').innerHTML=`<h2>🏠 Halo, ${esc(P.nama)}! 🐣</h2><div class="grid"><div class="card"><b>Pengingat terdekat</b>${soon.map(x=>`<p>${x[0]} — ${x[1]}</p>`).join('')||'<p>Tidak ada</p>'}</div><div class="card"><b>Tugas saya</b>${mine.map(x=>`<p>🧹 ${esc(x.data.tugas)} (${esc(x.data.hari)})</p>`).join('')||'<p>Semua beres 🎉</p>'}</div></div>`;return}
+  $('#main').innerHTML=`${hero()}${quick()}<div class="grid"><div class="card"><b>Pengingat terdekat</b>${soon.map(x=>`<p>${x[0]} — ${x[1]}</p>`).join('')||'<p>Tidak ada</p>'}</div><div class="card"><b>Tugas saya</b>${mine.map(x=>`<p>🧹 ${esc(x.data.tugas)} (${esc(x.data.hari)})</p>`).join('')||'<p>Semua beres 🎉</p>'}</div></div>`;return}
  try{const g=async k=>{const r=await sb.from('records').select('data').eq('module',k);if(r.error)throw r.error;return r.data},td=today(),ym=mo(0);
   const[kw,ag,kl,as,tg,ev]=await Promise.all(['keuangan','anggaran','kalender','aset','tugas','evaluasi'].map(g));
   const bl=kw.filter(x=>(x.data.tgl||'').startsWith(ym)),sm=t=>bl.filter(x=>x.data.tipe==t).reduce((a,x)=>a+(+x.data.jml||0),0),pm=sm('Pemasukan'),pk=sm('Pengeluaran'),
   sp=k=>bl.filter(x=>x.data.tipe=='Pengeluaran'&&x.data.kat==k).reduce((a,x)=>a+(+x.data.jml||0),0),pt={};tg.filter(x=>x.data.st&&x.data.petugas).forEach(x=>pt[x.data.petugas]=(pt[x.data.petugas]||0)+(+x.data.poin||0));
   const soon=[...kl.map(x=>[x.data.tgl,'📅 '+esc(x.data.judul)+(x.data.pic?' · PIC '+esc(x.data.pic):'')]),...as.map(x=>[x.data.tgl,'🔧 Servis '+esc(x.data.nama)])].filter(x=>x[0]>=td).sort().slice(0,8);
-  $('#main').innerHTML=`<h2>🏠 Dashboard Super Admin 🐣</h2><div class="grid"><div class="card">Pemasukan bulan ini<div class="big" style="color:var(--ok)">${rp(pm)}</div></div><div class="card">Pengeluaran<div class="big" style="color:#e0536b">${rp(pk)}</div></div><div class="card">Sisa<div class="big">${rp(pm-pk)}</div></div><div class="card">Pengguna aktif<div class="big">${PS.filter(p=>p.role!='pending').length}</div></div></div>
+  $('#main').innerHTML=`${hero()}${quick()}<div class="grid"><div class="st" style="background:linear-gradient(135deg,#3dbb8a,#7be0b4)">💰 Pemasukan bulan ini<div class="big">${rp(pm)}</div></div><div class="st" style="background:linear-gradient(135deg,#e0536b,#ff9a8b)">🛍️ Pengeluaran<div class="big">${rp(pk)}</div></div><div class="st" style="background:linear-gradient(135deg,#38a3e8,#8fd3f4)">🐷 Sisa<div class="big">${rp(pm-pk)}</div></div><div class="st" style="background:linear-gradient(135deg,#f5b301,#ffe066);color:#4a3b00">👨‍👩‍👧 Pengguna aktif<div class="big">${PS.filter(p=>p.role!='pending').length}</div></div></div>
   ${keuC(kw)}<div class="grid"><div class="card"><b>Anggaran vs realisasi</b>${ag.map(x=>{const s=sp(x.data.kat),p=+x.data.jml?Math.min(100,s/x.data.jml*100):0;return`<small>${esc(x.data.kat)}: ${rp(s)} / ${rp(x.data.jml)}</small><div class="bar"><i style="width:${p}%;background:${p>90?'#e0536b':'var(--ok)'}"></i></div>`}).join('')||'<small>Isi menu Anggaran dulu</small>'}</div>
   <div class="card"><b>Poin tugas anak & keluarga</b>${bars(Object.entries(pt))}</div><div class="card"><b>Pengingat terdekat</b>${soon.map(x=>`<p>${x[0]} — ${x[1]}</p>`).join('')||'<p>Tidak ada</p>'}</div></div>${evlC(ev)}`}catch(e){fail(e)}}
 const EMO=Array.from('😀😂😍🥰😎🤗😴😭😡👍🙏🎉🔥🌟🍚🍎🕌📖🚗🏠'),STK=['🐣','🐱','🐶','🦄','🧸','🌈','🍰','🎈'];
@@ -237,9 +244,11 @@ async function chat(){MS=(await sb.from('messages').select('*').order('created_a
  $('#main').innerHTML=`<h2>💬 Chat</h2><div class="card"><select onchange="CT=this.value;rc()"><option value="">👨‍👩‍👧 Grup Keluarga</option>${PS.filter(p=>p.id!=U.id&&p.role!='pending').map(p=>`<option value="${p.id}" ${p.id==CT?'selected':''}>${esc(p.nama)}</option>`).join('')}</select><div id="msgs"></div>
  <div class="em">${EMO.map(e=>`<span onclick="$('#mt').value+='${e}'">${e}</span>`).join('')}<br>Stiker: ${STK.map(e=>`<span style="font-size:36px" onclick="send('${e}',1)">${e}</span>`).join('')}</div>
  <input id="mt" placeholder="Tulis pesan..." onkeydown="if(event.key=='Enter')send()"><button class="btn" onclick="send()">Kirim</button></div>`;rc();
- ch=sb.channel('chat').on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},p=>{MS.push(p.new);rc()}).subscribe()}
+ ch=sb.channel('chat').on('postgres_changes',{event:'*',schema:'public',table:'messages'},p=>{if(p.eventType=='INSERT')MS.push(p.new);else if(p.eventType=='UPDATE')MS=MS.map(m=>m.id==p.new.id?p.new:m);else MS=MS.filter(m=>m.id!=p.old.id);rc()}).subscribe()}
 function rc(){const d=$('#msgs');if(!d)return;d.innerHTML=MS.filter(m=>CT?(m.user_id==U.id&&m.to_id==CT)||(m.user_id==CT&&m.to_id==U.id):!m.to_id).map(m=>{const s=m.isi.startsWith('::s::');
- return`<div class="m ${m.user_id==U.id?'me':''}"><small>${esc(m.nama)}</small><br><span style="font-size:${s?48:16}px">${esc(s?m.isi.slice(5):m.isi)}</span></div>`}).join('');d.scrollTop=1e9}
+ return`<div class="m ${m.user_id==U.id?'me':''}"><small>${esc(m.nama)}${m.edited?' · diedit':''}</small><span style="float:right;margin-left:10px">${m.user_id==U.id&&!s?`<a onclick="emsg(${m.id})" title="Edit">✏️</a> `:''}${m.user_id==U.id||P.role=='ayah'?`<a onclick="dmsg(${m.id})" title="Hapus">🗑️</a>`:''}</span><br><span style="font-size:${s?48:16}px">${esc(s?m.isi.slice(5):m.isi)}</span></div>`}).join('');d.scrollTop=1e9}
+async function emsg(id){const m=MS.find(x=>x.id==id),t=prompt('Edit pesan',m.isi);if(t==null||!t.trim())return;const e=(await sb.from('messages').update({isi:t.trim(),edited:true}).eq('id',id)).error;if(e)return alert(e.message);m.isi=t.trim();m.edited=true;rc()}
+async function dmsg(id){if(!confirm('Hapus pesan ini?'))return;const e=(await sb.from('messages').delete().eq('id',id)).error;if(e)return alert(e.message);MS=MS.filter(x=>x.id!=id);rc()}
 async function send(t,s){t=t||$('#mt').value.trim();if(!t)return;$('#mt').value='';const e=(await sb.from('messages').insert({isi:s?'::s::'+t:t,nama:P.nama,to_id:CT||null})).error;if(e)alert(e.message)}
 function fm(p,d){return CFG.menus.filter(m=>m.p==p).map(m=>{const i=CFG.menus.indexOf(m);return`<tr><td style="padding-left:${d*18}px">${esc(m.i)} ${esc(m.l)} ${isG(m.k)?'📂':''}</td><td><button class="btn s" onclick="renm(${i})">✏️</button> <button class="btn d" onclick="rmm(${i})">🗑️</button></td></tr>`+fm(m.k,d+1)}).join('')}
 async function setting(){PS=(await sb.from('profiles').select('*').order('created_at')).data||[];
@@ -260,19 +269,25 @@ function addm(){const gs=CFG.menus.filter(m=>isG(m.k)),l=prompt('Nama menu baru'
  CFG.menus.push({k:(confirm('Jadikan folder/grup (punya submenu)? OK = ya, Batal = menu biasa')?'g':'c_')+Date.now(),l,i,p});saveCfg().then(setting)}
 function logo(f){if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas'),k=Math.min(1,128/Math.max(i.width,i.height));c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);CFG.logo=c.toDataURL('image/png');saveCfg().then(()=>{saveLg();setting()})};i.src=r.result};r.readAsDataURL(f)}
 const TH={oranye:['Oranye Ceria','#ff7a59','#ffd9a8','#fff7ec','#f1e2cf'],putih:['Putih Bersih','#4b8bf5','#ffd54f','#ffffff','#e6ebf2'],langit:['Biru Langit','#38a3e8','#ffe066','#eaf6ff','#cfe8fb'],hijau:['Hijau Segar','#3dbb8a','#ffe066','#eefaf3','#cdeedd'],kuning:['Kuning Cerah','#f5b301','#7fd1f7','#fffbe6','#f6e9a8'],pink:['Pink Permen','#f06292','#8fd3f4','#fff0f5','#f8cfdc'],ungu:['Ungu Lavender','#9b6cf0','#a8e6cf','#f4eeff','#e0d3fb']};
-function applyTheme(t,c){const r=document.documentElement.style,x=TH[t],dk=matchMedia('(prefers-color-scheme:dark)').matches;
- if(x){r.setProperty('--pr',x[1]);r.setProperty('--pr2',x[2]);if(!dk){r.setProperty('--bg',x[3]);r.setProperty('--bd',x[4])}}
- else{r.setProperty('--pr',c||'#ff7a59');['--pr2','--bg','--bd'].forEach(v=>r.removeProperty(v))}
- const m=document.querySelector('meta[name=theme-color]');m&&m.setAttribute('content',x?x[1]:c||'#ff7a59')}
+const ML={auto:'Otomatis',light:'Terang',dark:'Gelap'},gm=()=>{try{return localStorage.getItem('mode')||'auto'}catch(e){return'auto'}};
+const isDark=()=>gm()=='dark'||(gm()=='auto'&&matchMedia('(prefers-color-scheme:dark)').matches);
+function applyTheme(t,c){const r=document.documentElement.style,x=TH[t],pr=x?x[1]:c||'#ff7a59',p2=x?x[2]:`color-mix(in srgb,${pr} 55%,#fff)`,dk=isDark(),set=o=>Object.entries(o).forEach(([k,v])=>r.setProperty(k,v));
+ set(dk?{'--pr':pr,'--pr2':`color-mix(in srgb,${p2} 55%,#222)`,'--bg':`color-mix(in srgb,${pr} 12%,#17131a)`,'--card':`color-mix(in srgb,${pr} 8%,#26202a)`,'--bd':`color-mix(in srgb,${pr} 28%,#3a3340)`,'--tx':'#f6ebe0','--mu':'#bbb0b8'}:{'--pr':pr,'--pr2':p2,'--bg':x?x[3]:'#fff7ec','--card':'#fff','--bd':x?x[4]:'#f1e2cf','--tx':'#3b2f2f','--mu':'#8a7b7b'});
+ r.colorScheme=dk?'dark':'light';const m=document.querySelector('meta[name=theme-color]');m&&m.setAttribute('content',pr)}
+function toggleMode(){const n={auto:'light',light:'dark',dark:'auto'}[gm()];try{localStorage.setItem('mode',n)}catch(e){}applyTheme(CFG.theme,CFG.color);if(P)nav()}
 async function setTheme(k){CFG.theme=k;await saveCfg();await saveLg();setting()}
 function applyLogin(){$('#lt').textContent=LG.t;$('#ls').textContent=LG.s;$('#le').innerHTML=LG.logo?`<img src="${esc(LG.logo)}" width="72" style="border-radius:50%">`:esc(LG.e);$('#login').style.background=LG.c1&&LG.c2?`linear-gradient(135deg,${LG.c1},${LG.c2})`:''}
 async function saveLg(){LG.logo=CFG.logo||'';LG.theme=CFG.theme||'';const e=(await sb.from('app_public').upsert({id:1,data:LG})).error;if(e)alert(e.message)}
 async function lgSave(rs){if(rs)LG.c1=LG.c2='';else{LG.t=$('#l1').value;LG.s=$('#l2').value;LG.e=$('#l3').value;LG.c1=$('#l4').value;LG.c2=$('#l5').value}await saveLg();applyLogin();setting()}
+const QT=['Hari ini penuh berkah 🌟','Keluarga adalah rumah terbaik 🏡','Bismillah, semangat! 💪','Sedikit demi sedikit lama-lama jadi bukit 🐷','Peluk hangat untuk semua 🤗'],QK=[['rekap','📊','Rekap'],['kalender','📅','Kalender'],['tugas','🧹','Tugas'],['chat','💬','Chat'],['kontak','🚑','Darurat'],['pengajuan','🙏','Pengajuan']];
+function hero(){const d=new Date();return`<div class="hero"><div class="e">${['🏡','🐣','🌈','🧸','🌻'][d.getDay()%5]}</div><div><div class="big">Halo, ${esc(P.nama)}! 👋</div><small>${d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</small><div>${QT[d.getDate()%QT.length]}</div></div><div style="margin-left:auto;font-size:26px">👨🧕👧👧👧</div></div>`}
+function quick(){return`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(90px,1fr))">${QK.filter(q=>allow(q[0])).map(q=>`<div class="card" style="text-align:center;cursor:pointer" onclick="go('${q[0]}')"><div style="font-size:30px">${q[1]}</div>${q[2]}</div>`).join('')}</div>`}
 let DP;addEventListener('beforeinstallprompt',e=>{e.preventDefault();DP=e;$('#inst').style.display='flex'});
 function inst(){DP&&DP.prompt();DP=null;$('#inst').style.display='none'}
 if(/iphone|ipad/i.test(navigator.userAgent)&&!navigator.standalone){$('#it').textContent='📲 Pasang: di Safari ketuk Bagikan lalu "Tambah ke Layar Utama".';$('#ib').style.display='none';$('#inst').style.display='flex'}
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 sb.auth.onAuthStateChange(ev=>{if(ev=='PASSWORD_RECOVERY')setTimeout(async()=>{const p=prompt('Password baru (min. 6 karakter):');if(p&&p.length>=6){const r=await sb.auth.updateUser({password:p});alert(r.error?r.error.message:'Password diganti.')}init()},0)});
+applyTheme(CFG.theme,CFG.color);
 OK&&sb.from('app_public').select('data').eq('id',1).maybeSingle().then(r=>{if(r.data&&r.data.data)LG={...LG,...r.data.data};if(LG.theme)applyTheme(LG.theme);applyLogin()});
 init();
 </script></body></html>
